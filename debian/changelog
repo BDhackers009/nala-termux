@@ -1,0 +1,244 @@
+nala (0.7.1) unstable; urgency=medium
+
+  [ Bug Fixes ]
+  * No error when a package can't be found during install
+  * Not following redirects when downloading
+  * Handle connection errors when updating package list similar to apt
+  * `Nala Update` not showing packages that are upgradable
+
+ -- Blake Lee <blake@volian.org>  Sun, 27 Mar 2022 16:23:21 -0400
+
+nala (0.7.0) unstable; urgency=medium
+
+  [ Changes ]
+  * Add `--sources` switch to `fetch` and don't enable them by default
+  * Improve local deb install messages
+  * Add `autoremove`/`autopurge` commands
+  * Add config file in `/etc/nala/nala.conf`. The current two configs
+    1. A toggle to disable the scrolling text
+    2. A toggle to disable Nala auto-removing by default
+  * Add `upgrade --exclude` to allow a package not to be upgraded
+  * Tweak colors to better support light terminals
+  * `update` is no longer an alias for `upgrade`. It will now function
+    the same way that `apt` does. `upgrade` will continue to update
+    the package list by default.
+  * Make spinners smoother during dpkg progress
+
+  [ Bug Fixes ]
+  * Update progress bar sometimes shows a garbage msg
+  * `dpkg` not respecting window resize signals
+  * Downloader not raising status to catch 404 errors
+  * `fetch` adding amd64 mirrors for arm users
+  * `fetch` adding mirrors without the proper release
+  * Fish not showing packages on commands that accept pkgs
+  * Exception when showing a package from a non standard URL
+  * Import error in some environments like conda
+
+ -- Blake Lee <blake@volian.org>  Fri, 25 Mar 2022 15:07:51 -0400
+
+nala (0.6.0) unstable; urgency=medium
+
+  [ Changes ]
+  * Add `--no-install-recommends` and `--install-suggests`
+  * Initial support for locales with `gettext`. Currently only
+    German is supported.
+  * Separate what packages are being removed vs auto-removed
+  * Improved the handling of virtual packages
+  * Improve error handling and other information
+  * Improve handling of local `.deb` packages
+  * Remove `/var/log/nala/nala.log` considering the history is
+    an exact replica of this.
+  * You can now specify a version of a package the same way you can
+    with `apt`. `nala install nala=0.6.0`
+  * Several performance improvements
+  * Add Reinstalling and Downgrading into the summary
+  * Use the `dpkg --status-fd` for advancing the progress bar
+  * Add fish completion
+
+  [ Bug Fixes ]
+  * CRITICAL: Nala would install packages that have a bad hash sum
+  * Force `LANG=C` for parsing `dpkg` output as to not break in
+    languages that aren't English. `--raw-dpkg` will switch back
+    to your language, but Nala will not format the text or show
+    a progress bar.
+  * Packages are uninstallable if it has virtual packages
+    in recommends or suggests
+  * Bash-completion incompatible with zsh
+  * Live display shows wrong title when fixing broken packages
+  * Summary shows extra packages won't be installed when they are
+  * Several bugs related to Nala running through a pipe
+  * Not being able to install virtual packages like `steam` or `mate`
+
+ -- Blake Lee <blake@volian.org>  Fri, 11 Mar 2022 23:03:58 -0500
+
+nala (0.5.2) unstable; urgency=medium
+
+  [ Bug Fixes ]
+  * Nala won't allow package downgrades when installing local `.deb`
+  * New and Old version numbers switched in upgrade summary
+  * Some post install notices not showing the full message
+  * dpkg progress bar sometimes going over the total
+  * Nala not writing to `/var/log/nala/term.log`
+  * Many fixes related to ascii compatibility mode
+  * Not being able to install from repo with pip
+  * `history` opening cache when it doesn't need to
+  * Optimize `search` command and transaction summary
+
+ -- Blake Lee <blake@volian.org>  Wed, 23 Feb 2022 15:47:15 -0500
+
+nala (0.5.1) unstable; urgency=medium
+
+  [ Bug Fixes ]
+  * Can't install packages that have virtual packages in suggests
+  * No error handling for `search` regex compliation errors
+  * Exception throw in `search` on packages without a description
+  * No argument checking for `search`
+  * Bash-completion not showing `search` switches
+
+ -- Blake Lee <blake@volian.org>  Tue, 22 Feb 2022 11:45:03 -0500
+
+nala (0.5.0) unstable; urgency=medium
+
+  [ Changes ]
+  * Change `--noninteractive` switch to `--non-interactive`
+  * Add `search` subcommand
+  * Add `--fix-broken` and `--no-fix-broken` switches
+  * Add fish completion
+  * Add `--no-install-recommends` and `--install-suggests`
+  * Nala now shows Recommended or Suggested packages when they
+    aren't due to be installed.
+  * Change bash-completion to be compatible with zsh
+
+  [ Bug Fixes ]
+  * `fetch` setting release to sid if it's unable to determine release
+  * Unable to install local `.deb` that doesn't have dependencies
+  * Nala checking `priority: required` instead of essential
+  * Nala not showing packages kept back during an upgrade
+  * Nala sometimes not notifying that a reboot is required
+  * Install hangs when non-interactive due to `need-restart` bug
+
+ -- Blake Lee <blake@volian.org>  Mon, 21 Feb 2022 18:41:44 -0500
+
+nala (0.4.2) unstable; urgency=medium
+
+  [ Bug Fixes ]
+  * Formatting breaks with `apt-listbugs` if bugs aren't present
+
+ -- Blake Lee <blake@volian.org>  Sat, 19 Feb 2022 07:40:34 -0500
+
+nala (0.4.1) unstable; urgency=medium
+
+  [ Bug Fixes ]
+  * Nala deadlocking due to `apt-listbugs`
+  * Nala not formatting `apt-listdifferences` properly
+
+ -- Blake Lee <blake@volian.org>  Fri, 18 Feb 2022 23:08:15 -0500
+
+nala (0.4.0) unstable; urgency=medium
+
+  [ Changes ]
+  * Replace threaded downloader with an async one
+  * Add estimated time to download and dpkg progress bars
+  * On dpkg completion change spinner to green check mark
+  * Add `-a` `--all-versions` switch for `show` command
+  * Add `--remove-essential` switch to allow breaking your system
+  * Add initial support for installing local debs
+
+  [ Bug Fixes ]
+  * Nala not showing `pacstall` `-deb` packages properly
+  * Filler sometimes inserted wrong during list update
+  * History not logging files that were auto-removed
+  * `dpkg` panel title saying updating during a history operation
+  * Progress bar showing `100%` when all operations haven't completed
+  * Scroll bar title `Updating Packages` when it is fetching archives
+  * Nala throwing exception on broken packages
+  * Several bugs related to operations on packages with no candidate
+  * Fetch not working on Pop!_OS
+  * History file corrupting if Nala is interrupted at just the right moment
+
+ -- Blake Lee <blake@volian.org>  Mon, 07 Feb 2022 15:39:23 -0500
+
+nala (0.3.0) unstable; urgency=medium
+
+  * Replaced aria2 with internal downloader
+  * Improved the show command's output
+  * Improved `--raw-dpkg` by forking normally instead of pty
+  * Distinguish Remove and Auto-Remove packages
+  * Add `--no-autoremove` switch
+  * Add dpkg progress bar
+  * Add support for readline environment variable
+  * Apt no longer redownloads packages with an epoch.
+
+ -- Blake Lee <blake@volian.org>  Sat, 22 Jan 2022 15:56:25 -0500
+
+nala (0.2.1) unstable; urgency=medium
+
+  * Critical bug fix. `nala clean` attempts to remove files
+    in the root directory due to the apt_pkg config not being
+    initialized.
+
+ -- Blake Lee <blake@volian.org>  Tue, 11 Jan 2022 16:10:41 -0500
+
+nala (0.2.0) unstable; urgency=medium
+
+  * Nala is now distributed with a nuitka binary
+  * Nala now uses rich for the update progress
+  * Improved `nala fetch` reliability and performance
+  * History file format is now pure json and more readable
+  * Nala's clean command no longer subprocesses `apt clean`
+  * Nala transactions with `--download-only` no longer make it
+    into the history file.
+
+ -- Blake Lee <blake@volian.org>  Mon, 10 Jan 2022 17:57:24 -0500
+
+nala (0.1.4) unstable; urgency=medium
+
+  * Fixed a bug where nothing can download
+  * Added error handling for url requests
+
+ -- Blake Lee <blake@volian.org>  Tue, 28 Dec 2021 08:32:25 -0500
+
+nala (0.1.3) unstable; urgency=medium
+
+  * Security fixes
+  * Fixed a bug where `nala --update` would throw an exception
+  * Fixed a bug where using Ubuntu mirrors.txt in sources.list
+  * A lot of code refactoring and optimizations
+  * `fetch` distro detection should be more reliable, but only
+    compatible with Debian and Ubuntu
+
+ -- Blake Lee <blake@volian.org>  Mon, 27 Dec 2021 17:39:44 -0500
+
+nala (0.1.2) unstable; urgency=medium
+
+  * Big holiday update
+  * debconf is now fully supported, along with apt-listchanges
+  * Added purge command
+  * Added --update to update the cache,
+    install no longer automatically updates the cache for you.
+  * Added a bunch of --conf options.
+  * Added --raw-dpkg in case you want regular ugly output
+  * Added wildcard* for install and remove commands
+  * Some History updates, you will likely need to remove your
+    old history file at /var/lib/nala/history
+  * While we're still in early development mandatory dpkg-debug
+    will be added to /var/log/nala
+  * Made general formatting changes
+
+ -- Blake Lee <blake@volian.org>  Sun, 19 Dec 2021 12:26:54 -0500
+
+nala (0.1.1) unstable; urgency=medium
+
+  * Big changes to output formatting
+  * Added --verbose global switch
+  * Added clean command
+  * Nala now uses a debug log file for --debug mode
+  * A few bug fixes.
+
+ -- Blake Lee <blake@volian.org>  Mon, 06 Dec 2021 09:29:38 -0500
+
+nala (0.1.0) unstable; urgency=medium
+
+  * nala experimental release
+
+ -- Blake Lee <blake@volian.org>  Mon, 29 Nov 2021 15:12:55 -0500
